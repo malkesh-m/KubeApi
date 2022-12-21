@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: kubeapi
+  name: kubeapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kubeapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: kubeapi
+    spec:
+      containers:
+      - image: docker.io/mmangukiya/kubeapi
+        name: kubeapi
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 80
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubeapi
+  labels:
+    run: kubeapi
+spec:
+  ports:
+  - port: 8081
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: kubeapi
+  type: LoadBalancer
